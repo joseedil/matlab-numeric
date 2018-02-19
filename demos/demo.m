@@ -6,7 +6,9 @@ R = 1e3;
 C = 1e-6;
 
 t_start = 0;			% Start time
-t_stop = 20*R*C;	        % Desired stop time
+t_stop = 20*R*C;	% Desired stop time
+
+vout0 = 0;        % Initial value
 
 h = 5*R*C/13;			% Time step
 href = 5*R*C/1000;			% Reference Time Step
@@ -28,10 +30,10 @@ vin = @(p, t) (mod(t./p,2) > 1) .* 1;
 ydot = @(y, t)((-y/(R*C) + vin(3*R*C, t)/(R*C)));
 
 %% Output
-y_euler = euler(ydot, tref);
-y_rk2 = rk2(ydot, t);
-y_rk3 = rk3(ydot, t);
-y_rk4 = rk4(ydot, t);
+y_euler = euler1(ydot, tref, vout0);
+y_rk2 = rk21(ydot, t, vout0);
+y_rk3 = rk31(ydot, t, vout0);
+y_rk4 = rk41(ydot, t, vout0);
 
 %% Plot
 plot(tref, y_euler);
