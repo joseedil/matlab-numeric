@@ -16,7 +16,7 @@ while true
   [Ytemp, Yerr] = rk45_step(Ydot, Yinitial, t, h, m);
   
   % Compute maximum error.
-  errmax = max(Yerr ./ Yscale) / eps;
+  errmax = max(abs(Yerr ./ Yscale)) / eps;
   
   % Step succeeded: exit loop if errmax is within acceptable range.
   if errmax <= 1.0; break; end
