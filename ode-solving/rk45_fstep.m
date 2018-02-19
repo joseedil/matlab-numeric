@@ -6,12 +6,16 @@ TINY = 1.0e-30;
 MAXSTEP = 10000;
 
 % Preallocation
-Y = zeros(1,m);
+Y = zeros(m, MAXSTEP);
+t = zeros(1, MAXSTEP);
+
+Y(:,1) = Yinitial;
+t(1) = t0;
 
 % Try to go straight to desired stepsize
 h = (t1 - t0)/2;
 
-for nstep = 1:MAXSTEP
+for i = 1:MAXSTEP
   
   % Resize stepsize if it is too large to finish.
   if t0+h > t1
@@ -23,8 +27,11 @@ for nstep = 1:MAXSTEP
   Yscale = abs(Yinitial) + abs(dydt.*h) + TINY;
   
   % Step solution.
-  [Y, t, hdid, hnext] = rk45_qstep(Ydot, Yinitial, t0, h, m, eps, Yscale);
-  t
+  [Ytemp, ttemp, hdid, hnext] = rk45_qstep(Ydot, Yinitial, t0, h, m, eps, Yscale);
+  
+  % Save results.
+  Y(:,i+1) = Ytemp;
+  t(i+1) = ttemp;
   
     % Are we done? Then, exit.
   if (t-t1)*(t1-t0) >= 0
@@ -32,10 +39,14 @@ for nstep = 1:MAXSTEP
   end
     
   % We are not done: update state and loop.
-  Yinitial = Y;
-  t0 = t;
+  Yinitial = Ytemp;
+  t0 = ttemp;
   h = hnext;
    
 end %for
+
+% Deallocate unused memory... 
+Y = Y(:,1:i);
+t = t(1:i);
 
 end %function
