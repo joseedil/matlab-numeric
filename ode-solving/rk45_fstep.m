@@ -3,7 +3,7 @@ function [Y, t] = rk45_fstep(Ydot, Yinitial, t0, t1, m, eps)
 %   Detailed explanation goes here
 
 TINY = 1.0e-30;
-MAXSTEP = 10000;
+MAXSTEP = 1000000;
 
 % Preallocation
 Y = zeros(m, MAXSTEP);

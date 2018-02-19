@@ -37,7 +37,7 @@ G = [-1/(R1*C1)-1/(R2*C1),   1/(R2*C1); ...
 ydot = @(Y, t)(G*Y + H.*vin(per, t));
 
 %% Output
-[y_rk45, t_rk45] = rk45_fstep(ydot, [0;0], 0, 30e-3, length(G), 1e-6);
+[y_rk45, t_rk45] = rk45_fstep(ydot, [1e-20;1e-20], 0, 30e-3, length(G), 1e-8);
 
 %% Plot
 plot(t_rk45, y_rk45);
