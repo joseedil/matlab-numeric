@@ -1,4 +1,19 @@
-function [Y, E] = rk45_step(Ydot, Yinitial, t, h, m)
+function [Y, E] = rk45_step(Ydot, Yinitial, t0, h, m)
+%RK45_STEP Cash-Karp single step Runge-Kutta method.
+%   [Y, E] = rk45_step(Ydot, Yinitial, t0, h, m) integrates the system 
+%   of m differential equations y' = Ydot(y,t) from time t0 to t0+h
+
+
+
+%[TOUT,YOUT] = ODE45(ODEFUN,TSPAN,Y0) with TSPAN = [T0 TFINAL] integrates 
+%   the system of differential equations y' = f(t,y) from time T0 to TFINAL 
+%   with initial conditions Y0. ODEFUN is a function handle. For a scalar T
+%   and a vector Y, ODEFUN(T,Y) must return a column vector corresponding 
+%   to f(t,y). Each row in the solution array YOUT corresponds to a time 
+%   returned in the column vector TOUT.  To obtain solutions at specific 
+%   times T0,T1,...,TFINAL (all increasing or all decreasing), use TSPAN = 
+%   [T0 T1 ... TFINAL].    
+
 
 % Constants
 a = [0, 0.2, 0.3, 0.6, 1.0, 0.875];
@@ -28,27 +43,28 @@ Y = zeros(m,1);
 E = zeros(m,1);
 
 %% Runge-Kutta steps
-k(:,1) = h * Ydot(Yinitial, t);
-k(:,2) = h * Ydot(Yinitial + b(2,1).*k(:,1), t + a(2)*h);
+k(:,1) = h * Ydot(Yinitial, t0);
+k(:,2) = h * Ydot(Yinitial + b(2,1).*k(:,1), t0 + a(2)*h);
 
 k(:,3) = h * Ydot(Yinitial + b(3,1).*k(:,1) ...
-                           + b(3,2).*k(:,2), t + a(3)*h);
+                           + b(3,2).*k(:,2), t0 + a(3)*h);
                          
 k(:,4) = h * Ydot(Yinitial + b(4,1).*k(:,1) ...
                            + b(4,2).*k(:,2) ...
-                           + b(4,3).*k(:,3), t + a(4)*h);
+                           + b(4,3).*k(:,3), t0 + a(4)*h);
 
 k(:,5) = h * Ydot(Yinitial + b(5,1).*k(:,1) ...
                            + b(5,2).*k(:,2) ...
                            + b(5,3).*k(:,3) ...
-                           + b(5,4).*k(:,4), t + a(5)*h);
+                           + b(5,4).*k(:,4), t0 + a(5)*h);
                          
 k(:,6) = h * Ydot(Yinitial + b(6,1).*k(:,1) ...
                            + b(6,1).*k(:,2) ...
                            + b(6,1).*k(:,3) ...
                            + b(6,1).*k(:,4) ...
-                           + b(6,1).*k(:,5) , t + a(6)*h);
+                           + b(6,1).*k(:,5) , t0 + a(6)*h);
 
+%                          
 Y = Yinitial + c(1)*k(:,1) ...
              + c(2)*k(:,2) ...
              + c(3)*k(:,3) ...
@@ -56,6 +72,7 @@ Y = Yinitial + c(1)*k(:,1) ...
              + c(5)*k(:,5) ...
              + c(6)*k(:,6);
 
+% Error estimation.
 E = h * (dc(1)*k(:,1) ...
        + dc(2)*k(:,2) ...
        + dc(3)*k(:,3) ...
