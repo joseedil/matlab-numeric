@@ -40,11 +40,11 @@ function y = neville1rec(t, x, f)
   endif
 
   if (!isvector(x) || !isvector(f)) # Check if arguments are vectors
-    error ("lagrange: arguments X and Y must be vectors");
+    error ("neville1rec: arguments X and Y must be vectors");
   endif
 
   if (length(x) != length(f))	# Check if arguments match dimensions
-    error ("lagrange: X and Y dimensions must match");
+    error ("neville1rec: X and Y dimensions must match");
   endif
 
   x = reshape(x, 1, length(x));
