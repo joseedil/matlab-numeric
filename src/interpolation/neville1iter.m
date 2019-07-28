@@ -51,19 +51,20 @@ function y = neville1iter(t, x, f)
   x = reshape(x, 1, length(x));
   f = reshape(f, 1, length(f));
 
-  if (length(x) == 1)
-    y = f;
-  else
-    for k = 1:length(t)
-        y = f;
-	for i = 1:length(x)
-	  for j = 1:length(x)-i
-	    y(j) = ((t(k)-x(j)).*y(j+1) - (t(k)-x(j+i)).*y(j))./(x(j+i) - x(j));
-	  endfor
+  for k = 1:length(t)
+    if (length(x) == 1)
+      out(k) = f;
+    else
+      y = f;
+      for i = 1:length(x)
+	for j = 1:length(x)-i
+	  y(j) = ((t(k)-x(j)).*y(j+1) - (t(k)-x(j+i)).*y(j))./(x(j+i) - x(j));
 	endfor
-	out(k) = y(1);
-    endfor
-  endif
+      endfor
+      out(k) = y(1);
+    endif
+  endfor
+
 
   y = out;
 
