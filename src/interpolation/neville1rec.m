@@ -21,7 +21,7 @@
 ## IN THE SOFTWARE.
 
 ## -*- texinfo -*-
-## @deftypefn  {} {@var{y} =} lagrange (@var{x}, @var{y})
+## @deftypefn  {} {@var{y} =} neville1rec (@var{t}, @var{x}, @var{f})
 ##
 ## Calculate the interpolating polynomial specified  by
 ## support abscissas @var{x} and ordinates @var{y} at points @var{t}
