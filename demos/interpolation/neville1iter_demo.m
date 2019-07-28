@@ -29,8 +29,8 @@ f = @(x) sin(x + 0.25*x.^2);
 
 ## Sample function. Those will be the support points.
 ti = 0;
-tf = 4;
-N = 20;
+tf = 5.5;
+N = 10;
 
 x = linspace(ti, tf, N);
 y = f(x);
@@ -48,7 +48,7 @@ subplot(2,1,1);
 hold on;
 plot(t, in, t, out);
 plot(x,y, 'ok');
-axis([0 4 -1.1 1.1]);
+axis([ti tf -1.1 1.1]);
 grid on;
 title("Interpolation - Neville's algorithm");
 #legend("Original function", "Interpolating polynomial",

@@ -29,7 +29,7 @@ f = @(x) sin(x + 0.25*x.^2);
 
 ## Sample function. Those will be the support points.
 ti = 0;
-tf = 4;
+tf = 5.5;
 N = 10;
 
 x = linspace(ti, tf, N);
@@ -48,7 +48,7 @@ subplot(2,1,1);
 hold on;
 plot(t, f(t), t, polyval(p,t));
 plot(x,y, 'ok');
-axis([0 4 -1.1 1.1]);
+axis([ti tf -1.1 1.1]);
 grid on;
 title("Lagrange interpolation");
 legend("Original function", "Interpolating polynomial", "Support points")
