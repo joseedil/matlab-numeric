@@ -3,5 +3,5 @@
 
 root_folder = pwd;
 
-addpath([root_folder '/demos']);
-addpath([root_folder '/src/ode']);
+addpath(genpath('src'), "-end");
+addpath(genpath('demos'), "-end");
