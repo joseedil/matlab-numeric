@@ -67,4 +67,4 @@ function [p, L] = lagrange(x, f)
 
   p = sum(repmat(f, 1, length(x)) .* L);
 
-  endfunction
+endfunction
