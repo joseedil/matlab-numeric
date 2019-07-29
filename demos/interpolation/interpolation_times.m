@@ -28,8 +28,9 @@ warning("off");
 verbose = true;
 
 ## Methods to evaluate
-eval_lagrange = true;
-eval_neville1rec = false;	# Very slow, be careful!
+eval_lagrange = false;
+eval_neville1rec = false;	# Very slow, don't go over nf=18...
+eval_neville1recmemo = true;
 eval_neville1iter = true;
 eval_neville2iter = true;
 
@@ -44,9 +45,9 @@ tf = 5.5;
 S = 100;
 t = linspace(ti, tf, S);
 
-ni=2;
-nf=50;
-inc = 5;
+ni=10;
+nf=60;
+inc = 10;
 
 N = ni:inc:nf;
 
@@ -65,6 +66,7 @@ for i = 1:length(N)
     k = k+1;
     if(verbose); disp("Lagrange..."); endif;
     tic; polyval(lagrange(x,y), t); time(k,i) = toc;
+    clear -functions;
     if(verbose); disp("Done!"); endif;
   endif
 
@@ -72,6 +74,15 @@ for i = 1:length(N)
     k = k+1;
     if(verbose); disp("Recursive Neville..."); endif;
     tic; neville1rec(t,x,y); time(k,i) = toc;
+    clear -functions;
+    if(verbose); disp("Done!"); endif;
+  endif
+
+  if(eval_neville1recmemo)
+    k = k+1;
+    if(verbose); disp("Memoized recursive Neville..."); endif;
+    tic; neville1recmemo(t,x,y); time(k,i) = toc;
+    clear -functions;
     if(verbose); disp("Done!"); endif;
   endif
 
@@ -79,6 +90,7 @@ for i = 1:length(N)
     k = k+1;
     if(verbose); disp("Iterative Neville..."); endif;
     tic; neville1iter(t,x,y); time(k,i) = toc;
+    clear -functions;
     if(verbose); disp("Done!"); endif;
   endif
 
@@ -86,6 +98,7 @@ for i = 1:length(N)
     k = k+1;
     if(verbose); disp("Modified Iterative Neville..."); endif;
     tic; neville2iter(t,x,y); time(k,i) = toc;
+    clear -functions;
     if(verbose); disp("Done!"); endif;
   endif
 
@@ -104,6 +117,11 @@ endif
 if(eval_neville1rec)
   k = k+1;
   plot(N, time(k,:), 'DisplayName', 'Recursive Neville', '-+');
+endif
+
+if(eval_neville1recmemo)
+  k = k+1;
+  plot(N, time(k,:), 'DisplayName', 'Memoized rec. Neville', '-*');
 endif
 
 if(eval_neville1iter)
